@@ -7,13 +7,22 @@ on:
     pull_request:
 
 jobs:
-  tests:
-    runs-on: ubuntu-latest
+  android-coverage:
+    runs-on: macos-latest
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Set Up JDK
+        uses: actions/setup-java@v3
         with:
-          ref: ${{ github.event.pull_request.head.sha }}
-      - name: test and publish coverage
+          distribution: 'zulu'
+          java-version: 17
+
+      - name: Run Tests
         env:
           COVERALLS_REPO_TOKEN: ${{ secrets.COVERALLS_REPO_TOKEN }}
-        run: ./gradlew test app:jacocoTestReport app:coverallsJacoco
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: 29
+          script: ./gradlew test app:jacocoTestReport app:coverallsJacoco
