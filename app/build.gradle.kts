@@ -2,6 +2,52 @@ plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
     id("org.jmailen.kotlinter")
+    id("com.github.nbaztec.coveralls-jacoco")
+}
+
+coverallsJacoco {
+    reportPath = "${buildDir}/reports/coverage/androidTest/debug/connected/report.xml"
+}
+
+tasks {
+    val jacocoTestReport by registering(JacocoReport::class) {
+        dependsOn("testDebugUnitTest", "createDebugCoverageReport")
+
+        group = "Reporting"
+        description = "Generate Jacoco coverage reports"
+
+        reports {
+            csv.required.set(false)
+            xml.required.set(true)
+            html.required.set(true)
+        }
+
+        val fileFilter = listOf(
+            "androidx/**/*.*",
+            "**/view/*.*",
+            "**/data/*.*",
+            "**/data/model/*.*",
+            "**/generated/callback/*.*",
+            "**/lambda$*.class",
+            "**/lambda.class",
+            "**/*lambda.class",
+            "**/*lambda*.class"
+        )
+
+        val debugTree = fileTree(mapOf(
+            "dir" to "${buildDir}/intermediates/javac/debug/classes",
+            "excludes" to fileFilter
+        ))
+
+        val mainSrc = "src/main/java"
+
+        sourceDirectories.setFrom(mainSrc)
+        classDirectories.setFrom(debugTree)
+        executionData.setFrom(fileTree(mapOf(
+            "dir" to buildDir,
+            "includes" to listOf("jacoco/testDebugUnitTest.exec")
+        )))
+    }
 }
 
 android {
@@ -29,6 +75,10 @@ android {
                 "proguard-rules.pro"
             )
         }
+        getByName("debug") {
+            enableUnitTestCoverage = true
+            enableAndroidTestCoverage = true
+        }
     }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
@@ -41,7 +91,7 @@ android {
         compose = true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion = "1.4.3"
+        kotlinCompilerExtensionVersion = "1.4.8"
     }
     packaging {
         resources {
@@ -52,7 +102,6 @@ android {
 
 dependencies {
     lintChecks("com.slack.lint.compose:compose-lint-checks:1.2.0")
-
     implementation("androidx.core:core-ktx:1.9.0")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.6.2")
     implementation("androidx.activity:activity-compose:1.7.2")
