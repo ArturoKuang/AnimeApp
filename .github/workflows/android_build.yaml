@@ -1,0 +1,22 @@
+name: Android Build
+
+on: push
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set Up JDK
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'zulu'
+          java-version: 17
+
+      - name: Build Project
+        run: ./gradlew assemble
+
+      - name: Static Analysis
+        run: ./gradlew detektAll lintKotlin app:lint  
