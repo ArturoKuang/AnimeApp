@@ -1,10 +1,10 @@
-name: Code coverage
+name: Code Coverage
 
 on:
   push:
     branches:
-      - main
-    pull_request:
+      - development
+  pull_request:
 
 jobs:
   android-coverage:
@@ -25,4 +25,4 @@ jobs:
         uses: reactivecircus/android-emulator-runner@v2
         with:
           api-level: 29
-          script: ./gradlew test app:jacocoTestReport app:coverallsJacoco
+          script: ./gradlew app:testDebugUnitTest
