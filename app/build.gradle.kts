@@ -54,6 +54,10 @@ tasks {
     }
 }
 
+tasks.named("coverallsJacoco") {
+    mustRunAfter(tasks.named("jacocoTestReport"))
+}
+
 android {
     namespace = "com.anime"
     compileSdk = 33
