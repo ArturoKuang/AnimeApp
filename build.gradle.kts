@@ -3,6 +3,7 @@ plugins {
     base
     id("com.android.application") version "8.1.0" apply false
     id("org.jetbrains.kotlin.android") version "1.8.10" apply false
+    id("com.github.nbaztec.coveralls-jacoco") version "1.2.16" apply false
     id("org.jmailen.kotlinter") version "3.16.0"
     id("io.gitlab.arturbosch.detekt").version("1.23.1")
 }
