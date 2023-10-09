@@ -31,5 +31,5 @@ jobs:
           script: ./gradlew app:jacocoTestReport app:coverallsJacoco
 
       - name: Run Tree
-        run: tree
+        run: cd /Users/runner/work/AnimeApp/AnimeApp/app/build/reports/coverage/androidTest/debug/connected ls
 

@@ -9,7 +9,6 @@ plugins {
 jacoco {
     toolVersion = "0.8.9"
 }
-
 coverallsJacoco {
     reportPath = "${rootProject.projectDir}/app/build/reports/coverage/androidTest/debug/connected/report.xml"
 }
