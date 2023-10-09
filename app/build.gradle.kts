@@ -1,12 +1,17 @@
 plugins {
+    jacoco
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
     id("org.jmailen.kotlinter")
     id("com.github.nbaztec.coveralls-jacoco")
 }
 
+jacoco {
+    toolVersion = "0.8.9"
+}
+
 coverallsJacoco {
-    reportPath = "${buildDir}/reports/coverage/androidTest/debug/connected/report.xml"
+    reportPath = "${rootProject.projectDir}/app/build/reports/coverage/androidTest/debug/connected/report.xml"
 }
 
 tasks {
